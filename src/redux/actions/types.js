@@ -1,0 +1,1 @@
+export const WELCOME_MSG = "WELCOME_MSG"; 
