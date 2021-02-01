@@ -8,28 +8,39 @@ const Report = () => {
       window.gapi.client
         .request({
           path: "/v4/reports:batchGet",
+          // path: "/v3/data/realtime",
           root: "https://analyticsreporting.googleapis.com/",
+          // root: "https://www.googleapis.com/analytics/",
           method: "POST",
           body: {
             reportRequests: [
               {
                 viewId: "216933178", //enter your view ID here
+                samplingLevel:  "LARGE",
                 dateRanges: [
                   {
-                    startDate: "2020-04-28",
+                    startDate: "2020-06-01",
                     endDate: "2021-01-30",
                   },
                 ],
                 metrics: [
                   {
-                    expression: "ga:newUsers",
+                    expression: "ga:users",
                   },
                 ],
                 dimensions: [
-                  {
-                    name: "ga:date",
-                  },
+                  {name: "ga:segment" }
                 ],
+                // metricFilterClauses: [{
+                //   filters: [{
+                //       metricName: "ga:date",
+                //       operator: "EXACT",
+                //       comparisonValue: "2020-05-26"
+                //   }],
+                // }]
+                segments: [{
+                  segmentId: "gaid::sH-dFLkAT22sJW2CFdl6tQ"
+                }]
               },
             ],
           },
@@ -39,6 +50,7 @@ const Report = () => {
 
     const displayResults = (response) => {//(2)
       const queryResult = response.result.reports[0].data.rows;
+      console.log(queryResult[0].metrics[0].values[0]);
       let totalUsers = 0;
       const result = queryResult.map((row) => {
         const dateSting = row.dimensions[0];
